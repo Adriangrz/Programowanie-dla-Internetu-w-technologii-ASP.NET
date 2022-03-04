@@ -1,0 +1,41 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.carousel-item {
+    height: 200px;
+    background: #777;
+    position: relative;
+}
+
+@media(min-width: 992px) {
+    .carousel-item {
+        height: 600px;
+    }
+}
+
+
+.carousel__picture {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-position: center;
+    background-size: cover;
+}
+
+.list-of-shops {
+    gap: 5px;
+}

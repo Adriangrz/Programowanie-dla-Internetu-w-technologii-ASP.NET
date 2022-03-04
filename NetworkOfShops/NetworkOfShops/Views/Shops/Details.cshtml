@@ -1,0 +1,20 @@
+﻿@model NetworkOfShops.Models.ShopViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="d-flex flex-row flex-wrap justify-content-center align-content-center h-100">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">@Html.DisplayFor(model => model.Street)</li>
+        <li class="list-group-item">@Html.DisplayFor(model => model.Town)</li>
+        <li class="list-group-item">@Html.DisplayFor(model => model.Telephone)</li>
+        <li class="list-group-item">@Html.DisplayFor(model => model.Email)</li>
+      </ul>
+      <div class="card-body">
+        @Html.ActionLink("Powrót","Index")
+      </div>
+    </div>
+</div>

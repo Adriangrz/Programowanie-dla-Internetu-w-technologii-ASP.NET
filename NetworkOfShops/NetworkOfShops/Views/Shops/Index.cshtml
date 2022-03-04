@@ -1,0 +1,17 @@
+﻿@model NetworkOfShops.Models.ShopItemViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="list-of-shops d-flex flex-row flex-wrap justify-content-center align-content-center h-100">
+    @foreach (var item in Model.Shops)
+    {
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Town)</h6>
+            @Html.ActionLink("Szczegóły","Details",new { item.Id })
+          </div>
+        </div>
+    }    
+</div>
+
