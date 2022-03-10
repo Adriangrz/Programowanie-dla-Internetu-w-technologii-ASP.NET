@@ -1,16 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetworkOfShops.Models;
+﻿using NetworkOfShops.Models;
 
 namespace NetworkOfShops.Data
 {
-    public static class AplicationDbInitializer
+    public class AplicationDbInitializer
     {
-        public static void Seed(this ModelBuilder modelBuilder)
+        private readonly AplicationDbContext _context;
+        public AplicationDbInitializer(AplicationDbContext aplicationDbContext)
         {
-            CreateShops(modelBuilder);
+            this._context = aplicationDbContext;
         }
+        public void Seed()
+        {
+            if (!_context.Shops.Any()) CreateShops(_context);
 
-        private static void CreateShops(ModelBuilder modelBuilder)
+        }
+        private void CreateShops(AplicationDbContext aplicationDbContext)
         {
             var shop1 = new Shop()
             {
@@ -20,14 +24,9 @@ namespace NetworkOfShops.Data
                 Town = "Warszawa",
                 Street = "Wodna 2",
                 Telephone = "56543433",
-                Email = "b@gmail.com",
-                Products = new List<Product>()
+                Email = "b@gmail.com"
             };
-            var products1 = new List<Product>()
-            {
-                new Product() { Id = 1, Name = "mekovita", Description = "sasasc", Price = 23, Shop = shop1}
-            };
-            shop1.Products = products1;
+            var products1 = new Product() { Id = 1, Name = "mekovita", Description = "sasasc", Price = 23, ShopId = 1 };
             var shop2 = new Shop()
             {
                 Id = 2,
@@ -36,22 +35,12 @@ namespace NetworkOfShops.Data
                 Town = "Wrocław",
                 Street = "Wodna 42",
                 Telephone = "567234897",
-                Email = "a@gmail.com",
-                Products = new List<Product>()
+                Email = "a@gmail.com"
             };
-            var products2 = new List<Product>()
-            {
-                new Product() { Id = 2, Name = "mlek", Description = "sasasc", Price = 23, Shop = shop2}
-            };
-            shop2.Products = products2;
-            modelBuilder.Entity<Shop>().HasData(
-                shop1,
-                shop2
-            );
-            modelBuilder.Entity<Product>().HasData(
-                products1,
-                products2
-            );
+            var products2 = new Product() { Id = 2, Name = "mlek", Description = "sasasc", Price = 23, ShopId = 2 };
+            aplicationDbContext.Shops.AddRange(shop1, shop2);
+            aplicationDbContext.Products.AddRange(products1, products2);
+            aplicationDbContext.SaveChanges();
         }
     }
 }
