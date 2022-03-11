@@ -15,6 +15,6 @@ namespace NetworkOfShops.Models
         public string Street { get; set; }
         public string Telephone { get; set; }
         public string Email { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace NetworkOfShops.Controllers
             {
                 return NotFound();
             }
-            ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Description", product.ShopId);
+            ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", product.ShopId);
             return View(product);
         }
 
@@ -119,7 +119,7 @@ namespace NetworkOfShops.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Description", product.ShopId);
+            ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", product.ShopId);
             return View(product);
         }
 
