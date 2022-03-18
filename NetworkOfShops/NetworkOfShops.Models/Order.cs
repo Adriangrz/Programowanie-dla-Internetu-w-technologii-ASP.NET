@@ -9,7 +9,8 @@ namespace NetworkOfShops.Models
     public class Order
     {
         public int Id { get; set; }
-        public Shop Shop { get; set; }
+        public int ShopId { get; set; }
+        public Shop? Shop { get; set; }
         public DateTime CreationDate { get; set; }
         public OrderStatus Status { get; set; }
         public ICollection<OrderDetails>? Details { get; set; }
