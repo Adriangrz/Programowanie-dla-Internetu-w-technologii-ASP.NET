@@ -22,7 +22,7 @@ namespace NetworkOfShops.Data
             {
                 Id = 1,
                 Name = "Biedronka",
-                Description = "sdsdds",
+                Description = "sdsds",
                 Town = "Warszawa",
                 Street = "Wodna 2",
                 Telephone = "56543433",

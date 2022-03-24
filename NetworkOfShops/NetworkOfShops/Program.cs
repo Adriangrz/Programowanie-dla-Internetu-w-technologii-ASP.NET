@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AplicationDbContext>(options =>
 });
 builder.Services.AddScoped<AplicationDbInitializer>();
 builder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
+builder.Services.AddScoped<IGenericRepository<Shop>, GenericRepository<Shop>>();
 
 var app = builder.Build();
 

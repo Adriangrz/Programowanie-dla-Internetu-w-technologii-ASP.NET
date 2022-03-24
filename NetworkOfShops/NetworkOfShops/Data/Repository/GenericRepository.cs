@@ -49,15 +49,16 @@ namespace NetworkOfShops.Repositories
             }
         }
 
-        public virtual async Task<T> GetBy(Func<T, bool> predicate, string includeProperties = "")
+        public virtual async Task<T> GetBy(Expression<Func<T, bool>> predicate, string includeProperties = "")
         {
             IQueryable<T> query = _dbSet;
+
             foreach (var includeProperty in includeProperties.Split
                 (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
             }
-            return await query.FirstOrDefaultAsync(p =).FindAsync(id);
+            return await query.FirstAsync(predicate); ;
         }
 
         public virtual async Task Insert(T entity)

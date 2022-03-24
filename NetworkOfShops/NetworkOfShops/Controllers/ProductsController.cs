@@ -16,19 +16,21 @@ namespace NetworkOfShops.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly IGenericRepository<Product> _repository;
+        private readonly IGenericRepository<Product> _repositoryProduct;
+        private readonly IGenericRepository<Shop> _repositoryShop;
         private readonly IMapper _mapper;
 
-        public ProductsController(IGenericRepository<Product> repository, IMapper mapper)
+        public ProductsController(IGenericRepository<Product> repositoryProduct, IGenericRepository<Shop> repositoryShop, IMapper mapper)
         {
-            _repository = repository;
+            _repositoryProduct = repositoryProduct;
+            _repositoryShop = repositoryShop;
             _mapper = mapper;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var products = await _repository.Get(null,null,"Shop");
+            var products = await _repositoryProduct.Get(null,null,"Shop");
             var resources = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(products);
             return View(resources);
         }
@@ -36,29 +38,25 @@ namespace NetworkOfShops.Controllers
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var product = await _context.Products
-            //    .Include(p => p.Shop)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (product == null)
-            //{
-            //    return NotFound();
-            //}
+            var product = await _repositoryProduct.GetBy(m => m.Id == id, "Shop");
+            if (product == null)
+            {
+                return NotFound();
+            }
 
-            //var resource = _mapper.Map<Product, ProductViewModel>(product);
-            //return View(resource);
-            return View();
+            var resource = _mapper.Map<Product, ProductViewModel>(product);
+            return View(resource);
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            //ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id");
-            //return View();
+            ViewData["ShopId"] = new SelectList(await _repositoryShop.Get(), "Id", "Id");
             return View();
         }
 
@@ -69,36 +67,34 @@ namespace NetworkOfShops.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,ShopId")] ProductCreateOrEditViewModel productViewModel)
         {
-            //var product = _mapper.Map<ProductCreateOrEditViewModel, Product>(productViewModel);
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(product);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", product.ShopId);
-            //var resource = _mapper.Map<Product, ProductCreateOrEditViewModel>(product);
-            //return View(resource);
-            return View();
+            var product = _mapper.Map<ProductCreateOrEditViewModel, Product>(productViewModel);
+            if (ModelState.IsValid)
+            {
+                await _repositoryProduct.Insert(product);
+                await _repositoryProduct.Save();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ShopId"] = new SelectList(await _repositoryShop.Get(), "Id", "Id", product.ShopId);
+            var resource = _mapper.Map<Product, ProductCreateOrEditViewModel>(product);
+            return View(resource);
         }
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var product = await _context.Products.FindAsync(id);
-            //if (product == null)
-            //{
-            //    return NotFound();
-            //}
-            //ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", product.ShopId);
-            //var resource = _mapper.Map<Product, ProductCreateOrEditViewModel>(product);
-            //return View(resource);
-            return View();
+            var product = await _repositoryProduct.GetBy(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            ViewData["ShopId"] = new SelectList(await _repositoryShop.Get(), "Id", "Id", product.ShopId);
+            var resource = _mapper.Map<Product, ProductCreateOrEditViewModel>(product);
+            return View(resource);
         }
 
         // POST: Products/Edit/5
@@ -108,56 +104,52 @@ namespace NetworkOfShops.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,ShopId")] ProductCreateOrEditViewModel productViewModel)
         {
-            //var product = _mapper.Map<ProductCreateOrEditViewModel, Product>(productViewModel);
-            //if (id != product.Id)
-            //{
-            //    return NotFound();
-            //}
+            var product = _mapper.Map<ProductCreateOrEditViewModel, Product>(productViewModel);
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
 
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(product);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!ProductExists(product.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", product.ShopId);
-            //var resource = _mapper.Map<Product, ProductCreateOrEditViewModel>(product);
-            //return View(resource);
-            return View();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _repositoryProduct.Update(product);
+                    await _repositoryProduct.Save();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await ProductExists(product.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ShopId"] = new SelectList(await _repositoryShop.Get(), "Id", "Id", product.ShopId);
+            var resource = _mapper.Map<Product, ProductCreateOrEditViewModel>(product);
+            return View(resource);
         }
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var product = await _context.Products
-            //    .Include(p => p.Shop)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (product == null)
-            //{
-            //    return NotFound();
-            //}
-            //var resource = _mapper.Map<Product, ProductViewModel>(product);
-            //return View(resource);
-            return View();
+            var product = await _repositoryProduct.GetBy(m => m.Id == id, "Shop");
+            if (product == null)
+            {
+                return NotFound();
+            }
+            var resource = _mapper.Map<Product, ProductViewModel>(product);
+            return View(resource);
         }
 
         // POST: Products/Delete/5
@@ -165,16 +157,15 @@ namespace NetworkOfShops.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var product = await _context.Products.FindAsync(id);
-            //_context.Products.Remove(product);
-            //await _context.SaveChangesAsync();
+            var product = await _repositoryProduct.GetBy(m => m.Id == id);
+            _repositoryProduct.Delete(product);
+            await _repositoryProduct.Save();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private async Task<bool> ProductExists(int id)
         {
-            //return _context.Products.Any(e => e.Id == id);
-            return true;
+            return await _repositoryProduct.GetBy(m => m.Id == id) == null;
         }
     }
 }
