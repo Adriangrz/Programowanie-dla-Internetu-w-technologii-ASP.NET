@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkOfShops", "NetworkOfShops\NetworkOfShops.csproj", "{6D46C8A8-9119-46EE-8678-88344D960467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkOfShops.Models", "NetworkOfShops.Models\NetworkOfShops.Models.csproj", "{7DCB526A-CAA4-4EC2-AB5B-DAEDE1803247}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkOfShops.Models", "NetworkOfShops.Models\NetworkOfShops.Models.csproj", "{7DCB526A-CAA4-4EC2-AB5B-DAEDE1803247}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

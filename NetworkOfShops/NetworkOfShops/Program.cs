@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NetworkOfShops.Data;
+using NetworkOfShops.Models;
+using NetworkOfShops.Repositories;
+using NetworkOfShops.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,7 @@ builder.Services.AddDbContext<AplicationDbContext>(options =>
     options.UseInMemoryDatabase(databaseName: "Test");
 });
 builder.Services.AddScoped<AplicationDbInitializer>();
+builder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
 
 var app = builder.Build();
 
