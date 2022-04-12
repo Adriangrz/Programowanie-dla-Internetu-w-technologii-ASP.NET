@@ -1,4 +1,5 @@
-﻿using NetworkOfShops.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using NetworkOfShops.Models;
 
 namespace NetworkOfShops.Data
 {
@@ -7,7 +8,7 @@ namespace NetworkOfShops.Data
         private readonly AplicationDbContext _context;
         public AplicationDbInitializer(AplicationDbContext aplicationDbContext)
         {
-            this._context = aplicationDbContext;
+            _context = aplicationDbContext;
         }
         public void Seed()
         {
