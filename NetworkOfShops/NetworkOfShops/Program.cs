@@ -6,6 +6,7 @@ using NetworkOfShops.Repositories;
 using NetworkOfShops.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<AplicationDbContext>(options =>
     options.UseInMemoryDatabase(databaseName: "Test");
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AplicationDbContext>();
 builder.Services.AddScoped<AplicationDbInitializer>();
@@ -47,8 +48,8 @@ void SeedData(IHost app)
     {
         var service = scope.ServiceProvider.GetService<AplicationDbInitializer>();
         var service2 = scope.ServiceProvider.GetService<IAuthorizationInitializer>();
-        service.Seed();
         service2.GenerateAdminAndRoles().Wait();
+        service.Seed();
     }
 }
 
@@ -56,6 +57,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "MyArea",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

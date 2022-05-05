@@ -16,5 +16,6 @@ namespace NetworkOfShops.Models
         public int ShopId { get; set; }
         public Shop Shop { get; set; }
         public ICollection<OrderDetails> OrderDetails { get; set; }
+        public ICollection<ProductInShop>? ProductsInShop { get; set; }
     }
 }

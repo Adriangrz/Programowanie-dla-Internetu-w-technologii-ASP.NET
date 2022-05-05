@@ -5,7 +5,7 @@ using NetworkOfShops.Models;
 
 namespace NetworkOfShops.Data
 {
-    public class AplicationDbContext : IdentityDbContext
+    public class AplicationDbContext : IdentityDbContext<AplicationUser>
     {
         public AplicationDbContext()
         {
@@ -27,5 +27,11 @@ namespace NetworkOfShops.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
+
+
+        public DbSet<NetworkOfShops.Models.Bill> Bill { get; set; }
+
+
+        public DbSet<NetworkOfShops.Models.ProductInBill> ProductInBill { get; set; }
     }
 }

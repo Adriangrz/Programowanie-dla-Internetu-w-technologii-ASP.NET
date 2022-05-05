@@ -1,0 +1,15 @@
+﻿@model NetworkOfShops.Models.Bill
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "GenerateInvoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Numer rachunku: @Html.DisplayFor(model => model.Id)</h1>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item">Data utworzenia: @Html.DisplayFor(model => model.CreationDate)</li>
+  <li class="list-group-item">Do zapłaty: @Html.DisplayFor(model => model.ToPay)</li>
+
+@foreach (var item in Model.ProductsInBill) {
+  <li class="list-group-item">Ilość: @Html.DisplayFor(m => item.Amount) Cena*Ilość: @Html.DisplayFor(m => item.Price) Nazwa: @Html.DisplayFor(m => item.ProductInShop.Product.Name)</li>
+}
+</ul>

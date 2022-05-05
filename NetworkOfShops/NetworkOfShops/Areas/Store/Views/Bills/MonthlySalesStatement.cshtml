@@ -1,0 +1,42 @@
+﻿@model IEnumerable<NetworkOfShops.Models.Bill>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "MonthlySalesStatement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>MonthlySalesStatement</h1>
+
+<h3>Ilość produktów sprzedanych: @ViewBag.NumberOfProducts</h3>
+<h3>W sumie ilość pieniędzy: @ViewBag.AmountOfMoney</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToPay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shop)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToPay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Shop.Description)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

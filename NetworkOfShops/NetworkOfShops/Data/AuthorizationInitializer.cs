@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using NetworkOfShops.Models;
 
 namespace NetworkOfShops.Data
 {
@@ -8,10 +9,10 @@ namespace NetworkOfShops.Data
     }
     public class AuthorizationInitializer : IAuthorizationInitializer
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<AplicationUser> _signInManager;
+        private readonly UserManager<AplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleMannager;
-        public AuthorizationInitializer(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleMannager)
+        public AuthorizationInitializer(SignInManager<AplicationUser> signInManager, UserManager<AplicationUser> userManager, RoleManager<IdentityRole> roleMannager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -44,7 +45,7 @@ namespace NetworkOfShops.Data
                 await _roleMannager.CreateAsync(new IdentityRole(clientRole));
             }
 
-            var admin = new IdentityUser()
+            var admin = new AplicationUser()
             {
                 SecurityStamp = new Guid().ToString(),
                 UserName = "admin@test.pl",
@@ -62,7 +63,7 @@ namespace NetworkOfShops.Data
                 await _userManager.AddToRoleAsync(admin, clientRole);
             }
 
-            var manager = new IdentityUser()
+            var manager = new AplicationUser()
             {
                 SecurityStamp = new Guid().ToString(),
                 UserName = "manager@test.pl",
@@ -77,7 +78,7 @@ namespace NetworkOfShops.Data
                 await _userManager.AddToRoleAsync(manager, managerRole);
             }
 
-            var staff = new IdentityUser()
+            var staff = new AplicationUser()
             {
                 SecurityStamp = new Guid().ToString(),
                 UserName = "staff@test.pl",
@@ -92,7 +93,7 @@ namespace NetworkOfShops.Data
                 await _userManager.AddToRoleAsync(staff, staffRole);
             }
 
-            var client = new IdentityUser()
+            var client = new AplicationUser()
             {
                 SecurityStamp = new Guid().ToString(),
                 UserName = "client@test.pl",
