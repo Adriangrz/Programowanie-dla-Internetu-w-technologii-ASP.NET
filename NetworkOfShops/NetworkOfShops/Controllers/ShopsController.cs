@@ -18,12 +18,14 @@ namespace NetworkOfShops.Controllers
         };
         private static ShopItemViewModel shopItemViewModel = new ShopItemViewModel { Shops = shopViewModels };
         // GET: ShopsController
+        [ResponseCache(Duration = 120)]
         public ActionResult Index()
         {
             return View(shopItemViewModel);
         }
 
         // GET: ShopsController/Details/5
+        [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "id" })]
         public ActionResult Details(int id)
         {
             return View(shopItemViewModel.Shops.FirstOrDefault(x=>x.Id == id));

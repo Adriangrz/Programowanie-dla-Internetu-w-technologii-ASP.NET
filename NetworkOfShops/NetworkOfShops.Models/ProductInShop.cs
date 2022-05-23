@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace NetworkOfShops.Models
         public int ShopId { get; set; }
         public Shop? Shop { get; set; }
         public decimal PriceInShop { get; set; }
+        public string ProductImage { get; set; }
         public ICollection<ProductInBill>? ProductInBills { get; set; }
     }
 }

@@ -12,12 +12,12 @@ namespace NetworkOfShops.Controllers
         {
             _logger = logger;
         }
-
+        [ResponseCache(Duration = 120)]
         public IActionResult Index()
         {
             return View();
         }
-
+        [ResponseCache(Duration = 120)]
         public IActionResult Privacy()
         {
             return View();

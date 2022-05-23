@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NetworkOfShops.Areas.Store.Models;
 using NetworkOfShops.Data;
 using NetworkOfShops.Models;
 
@@ -19,11 +20,13 @@ namespace NetworkOfShops.Areas.Store.Controllers
     {
         private readonly AplicationDbContext _context;
         private readonly UserManager<AplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductInShopsController(AplicationDbContext context, UserManager<AplicationUser> userManager)
+        public ProductInShopsController(AplicationDbContext context, UserManager<AplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Store/ProductInShops
@@ -131,7 +134,79 @@ namespace NetworkOfShops.Areas.Store.Controllers
             return View(productInShop);
         }
 
+        // GET: Store/ProductInShops/Edit/5
+        public async Task<IActionResult> AddFile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var productInShop = await _context.ProductsInShop.FindAsync(id);
+            if (productInShop == null)
+            {
+                return NotFound();
+            }
+            var imageFileAddViewModel = new ImageFileAddViewModel()
+            {
+                Id = (int)id
+            };
+            return View(imageFileAddViewModel);
+        }
+
+        // POST: Store/ProductInShops/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFile(int id, [Bind("Id,ProductImage")] ImageFileAddViewModel imageFileAddViewModel)
+        {
+            if (id != imageFileAddViewModel.Id)
+            {
+                return NotFound();
+            }
+            var productInShop = await _context.ProductsInShop.FindAsync(imageFileAddViewModel.Id);
+            if (productInShop == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = null;
+
+                if (imageFileAddViewModel.ProductImage != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFileAddViewModel.ProductImage.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    imageFileAddViewModel.ProductImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                    productInShop.ProductImage = uniqueFileName;
+                }
+            }
+
+            try
+            {
+                _context.Update(productInShop);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductInShopExists(productInShop.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Store/ProductInShops/Delete/5
+        [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "id" })]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

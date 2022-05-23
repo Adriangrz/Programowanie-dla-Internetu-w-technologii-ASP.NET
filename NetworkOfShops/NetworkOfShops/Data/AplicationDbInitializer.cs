@@ -80,14 +80,16 @@ namespace NetworkOfShops.Data
                 Id = 1,
                 ShopId = 1,
                 ProductId = 1,
-                PriceInShop = 13
+                PriceInShop = 13,
+                ProductImage = ""
             };
             var productInShop2 = new ProductInShop()
             {
                 Id = 2,
                 ShopId = 2,
                 ProductId = 2,
-                PriceInShop = 33
+                PriceInShop = 33,
+                ProductImage = ""
             };
             aplicationDbContext.ProductsInShop.AddRange(productInShop1, productInShop2);
             aplicationDbContext.SaveChanges();

@@ -36,6 +36,7 @@ namespace NetworkOfShops.Areas.Store.Controllers
         }
 
         // GET: Store/Orders/Details/5
+        [ResponseCache(Duration = 120, VaryByQueryKeys = new[] { "id" })]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
