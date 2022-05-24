@@ -44,6 +44,14 @@ namespace NetworkOfShops.Areas.Store.Controllers
             ViewData["AmountOfMoney"] = aplicationDbContext.Sum(x => x.ToPay);
             return View(await aplicationDbContext.ToListAsync());
         }
+
+        public JsonResult FetchAnnualAmountOfMoney()
+        {
+            var aplicationDbContext = _context.Bill.Where(p => p.CreationDate.Year == DateTime.Now.Year).Include(x => x.ProductsInBill);
+            var sum = aplicationDbContext.Sum(x => x.ToPay);
+            return Json(sum);
+        }
+
         [Route("/store/bills/AnnualSalesStatement")]
         public async Task<IActionResult> AnnualSalesStatement()
         {

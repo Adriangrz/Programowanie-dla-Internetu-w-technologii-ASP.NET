@@ -6,7 +6,7 @@
 }
 
 <h1>Index</h1>
-
+<h3 class="AmountOfMoney">W sumie ilość pieniędzy: </h3>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -50,3 +50,19 @@
 }
     </tbody>
 </table>
+@section Scripts  
+{
+    <script type="text/javascript">
+        $.ajax({  
+                type: "GET",  
+                url: '@Url.Action("FetchAnnualAmountOfMoney")',    
+                success: function (data) {
+                   const amountOfMoney = document.querySelector('.AmountOfMoney');
+                   amountOfMoney.textContent = `W sumie ilość pieniędzy: ${data}`;
+                },  
+                error: function () {  
+                    alert("Error while reading data");  
+                }  
+            }); 
+    </script>
+}
