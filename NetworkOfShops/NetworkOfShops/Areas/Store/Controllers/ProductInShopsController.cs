@@ -134,7 +134,6 @@ namespace NetworkOfShops.Areas.Store.Controllers
             return View(productInShop);
         }
 
-        // GET: Store/ProductInShops/Edit/5
         public async Task<IActionResult> AddFile(int? id)
         {
             if (id == null)
@@ -154,7 +153,6 @@ namespace NetworkOfShops.Areas.Store.Controllers
             return View(imageFileAddViewModel);
         }
 
-        // POST: Store/ProductInShops/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
