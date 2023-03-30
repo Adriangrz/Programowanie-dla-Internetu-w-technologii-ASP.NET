@@ -21,6 +21,11 @@ builder.Services.AddDbContext<AplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AplicationDbContext>();
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+});
 builder.Services.AddScoped<AplicationDbInitializer>();
 builder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
 builder.Services.AddScoped<IGenericRepository<Shop>, GenericRepository<Shop>>();
